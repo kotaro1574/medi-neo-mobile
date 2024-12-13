@@ -19,6 +19,10 @@ export default function Index() {
     },
   });
 
+  const onSubmit = (data: z.infer<typeof formSchema>) => {
+    console.log(data);
+  };
+
   return (
     <View className="container max-w-[450px] py-[120px] bg-white">
       <Text className="text-center text-[24px] font-bold text-[#c2b37f]">
@@ -31,9 +35,19 @@ export default function Index() {
             control={form.control}
             name="id"
             render={({ field: { value, onChange } }) => (
-              <Input className="mt-1" value={value} onChangeText={onChange} />
+              <Input
+                className="mt-1"
+                value={value}
+                onChangeText={onChange}
+                isError={!!form.formState.errors.id}
+              />
             )}
           />
+          {form.formState.errors.id && (
+            <Text className="text-xs text-destructive mt-1">
+              {form.formState.errors.id.message}
+            </Text>
+          )}
         </View>
         <View className="mt-4">
           <Text className="text-[14px] text-neutral-400">パスワード</Text>
@@ -51,7 +65,7 @@ export default function Index() {
           />
         </View>
         <View className="mt-12">
-          <Button>ログイン</Button>
+          <Button onPress={form.handleSubmit(onSubmit)}>ログイン</Button>
           <Button className="mt-4">新規登録</Button>
         </View>
       </View>
