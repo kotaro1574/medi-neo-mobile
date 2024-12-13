@@ -24,7 +24,7 @@ export default function Index() {
   };
 
   return (
-    <View className="container max-w-[450px] py-[120px] bg-white">
+    <View className="container max-w-[450px] bg-white py-[120px]">
       <Text className="text-center text-[24px] font-bold text-[#c2b37f]">
         ログイン
       </Text>
@@ -44,7 +44,7 @@ export default function Index() {
             )}
           />
           {form.formState.errors.id && (
-            <Text className="text-xs text-destructive mt-1">
+            <Text className="mt-1 text-xs text-destructive">
               {form.formState.errors.id.message}
             </Text>
           )}
