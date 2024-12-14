@@ -15,7 +15,7 @@ const Input = ({ className, isError = false, ...props }: InputProps) => {
           isError &&
           "border-destructive focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-destructive"
         }`,
-        className
+        className,
       )}
       {...props}
     />
