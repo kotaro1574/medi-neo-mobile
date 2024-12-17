@@ -1,9 +1,11 @@
-import { Text, View } from "react-native";
+import { Alert, Text, View } from "react-native";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { useState } from "react";
+import { supabase } from "@/lib/supabase/supabase";
 
 const formSchema = z.object({
   id: z.string().min(1, "idを入力してください"),
@@ -11,6 +13,7 @@ const formSchema = z.object({
 });
 
 export default function Login() {
+  const [loading, setLoading] = useState(false);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -19,8 +22,15 @@ export default function Login() {
     },
   });
 
-  const onSubmit = (data: z.infer<typeof formSchema>) => {
-    console.log(data);
+  const onSubmit = async ({ id, password }: z.infer<typeof formSchema>) => {
+    setLoading(true);
+    const { error } = await supabase.auth.signInWithPassword({
+      email: `${id}@medineo.cc`,
+      password: password,
+    });
+
+    if (error) Alert.alert("Sign Up Error", error.message);
+    setLoading(false);
   };
 
   return (
@@ -65,7 +75,9 @@ export default function Login() {
           />
         </View>
         <View className="mt-12">
-          <Button onPress={form.handleSubmit(onSubmit)}>ログイン</Button>
+          <Button disabled={loading} onPress={form.handleSubmit(onSubmit)}>
+            {loading ? "ログイン中..." : "ログイン"}
+          </Button>
         </View>
       </View>
     </View>
