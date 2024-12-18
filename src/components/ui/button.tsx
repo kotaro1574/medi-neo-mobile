@@ -1,9 +1,10 @@
 import { cva, type VariantProps } from "class-variance-authority";
 import * as React from "react";
+import { forwardRef } from "react";
 
 import { cn } from "@/lib/utils";
 import { ComponentProps } from "react";
-import { Text, TouchableOpacity } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 
 const buttonVariants = cva(
   "inline-flex items-center justify-center text-center transition-colors disabled:pointer-events-none disabled:opacity-50",
@@ -44,15 +45,20 @@ type ButtonProps = ComponentProps<typeof TouchableOpacity> &
   ButtonVariantProps &
   buttonTextVariantsProps;
 
-const Button = ({ className, variant, size, ...props }: ButtonProps) => {
-  return (
-    <TouchableOpacity
-      className={cn(buttonVariants({ variant, size, className }))}
-      {...props}
-    >
-      <Text className={cn(buttonTextVariants())}>{props.children}</Text>
-    </TouchableOpacity>
-  );
-};
+const Button = forwardRef<View, ButtonProps>(
+  ({ className, variant, size, children, ...props }, ref) => {
+    return (
+      <TouchableOpacity
+        ref={ref}
+        className={cn(buttonVariants({ variant, size, className }))}
+        {...props}
+      >
+        <Text className={cn(buttonTextVariants())}>{children}</Text>
+      </TouchableOpacity>
+    );
+  },
+);
+
+Button.displayName = "Button";
 
 export { Button, buttonTextVariants, buttonVariants };
