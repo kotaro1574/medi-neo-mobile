@@ -1,62 +1,66 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { supabase } from "@/lib/supabase/supabase";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Link } from "expo-router";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { Alert, Text, View } from "react-native";
+import { Text, View } from "react-native";
 import { z } from "zod";
 
 const formSchema = z.object({
-  id: z.string().min(1, "idを入力してください"),
-  password: z.string(),
+  userName: z.string().min(1, "所有者名を入力してください"),
+  password: z.string().min(8, {
+    message: "パスワードは8文字以上である必要があります。",
+  }),
+  facilityId: z.string().min(1, "所属施設を選択してください"),
 });
 
-export default function Login() {
+export default function Signup() {
   const [loading, setLoading] = useState(false);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      id: "",
+      userName: "",
       password: "",
     },
   });
 
-  const onSubmit = async ({ id, password }: z.infer<typeof formSchema>) => {
+  const onSubmit = async ({
+    userName,
+    password,
+  }: z.infer<typeof formSchema>) => {
     setLoading(true);
-    const { error } = await supabase.auth.signInWithPassword({
-      email: `${id}@medineo.cc`,
-      password: password,
-    });
+    // const { error } = await supabase.auth.signInWithPassword({
+    //   email: `${id}@medineo.cc`,
+    //   password: password,
+    // });
 
-    if (error) Alert.alert("Sign Up Error", error.message);
+    // if (error) Alert.alert("Sign Up Error", error.message);
     setLoading(false);
   };
 
   return (
     <View className="container max-w-[450px] bg-white py-[120px]">
       <Text className="text-center text-[24px] font-bold text-[#c2b37f]">
-        ログイン
+        ユーザー登録
       </Text>
       <View className="mt-[24px] p-10">
         <View>
           <Text className="text-[14px] text-neutral-400">id</Text>
           <Controller
             control={form.control}
-            name="id"
+            name="userName"
             render={({ field: { value, onChange } }) => (
               <Input
                 className="mt-1"
                 value={value}
                 onChangeText={onChange}
-                isError={!!form.formState.errors.id}
+                isError={!!form.formState.errors.userName}
               />
             )}
           />
-          {form.formState.errors.id && (
+          {form.formState.errors.userName && (
             <Text className="mt-1 text-xs text-destructive">
-              {form.formState.errors.id.message}
+              {form.formState.errors.userName.message}
             </Text>
           )}
         </View>
@@ -77,11 +81,8 @@ export default function Login() {
         </View>
         <View className="mt-12">
           <Button disabled={loading} onPress={form.handleSubmit(onSubmit)}>
-            {loading ? "ログイン中..." : "ログイン"}
+            {loading ? "登録中..." : "登録"}
           </Button>
-          <Link className="mt-4" href="/signup" asChild>
-            <Button>新規登録</Button>
-          </Link>
         </View>
       </View>
     </View>
