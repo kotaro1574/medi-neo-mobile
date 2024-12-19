@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Select } from "@/components/ui/select";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -79,10 +80,33 @@ export default function Signup() {
             )}
           />
         </View>
-        <View className="mt-12">
-          <Button disabled={loading} onPress={form.handleSubmit(onSubmit)}>
-            {loading ? "登録中..." : "登録"}
-          </Button>
+        <View className="mt-4">
+          <Text className="text-[14px] text-neutral-400">所属施設</Text>
+          <Controller
+            control={form.control}
+            name="facilityId"
+            render={({ field: { value, onChange } }) => (
+              <Select
+                className="mt-1"
+                items={[
+                  { label: "施設1", value: "facility1" },
+                  { label: "施設2", value: "facility2" },
+                ]}
+                value={value}
+                onValueChange={onChange}
+              />
+            )}
+          />
+          {form.formState.errors.facilityId && (
+            <Text className="mt-1 text-xs text-destructive">
+              {form.formState.errors.facilityId.message}
+            </Text>
+          )}
+          <View className="mt-12">
+            <Button disabled={loading} onPress={form.handleSubmit(onSubmit)}>
+              {loading ? "登録中..." : "登録"}
+            </Button>
+          </View>
         </View>
       </View>
     </View>
