@@ -1,6 +1,7 @@
 import { cn } from "@/lib/utils";
 import { View, StyleSheet, Platform } from "react-native";
 import RNPickerSelect, { Item } from "react-native-picker-select";
+import { ChevronDown } from "lucide-react-native";
 
 type Props = {
   items: Item[];
@@ -28,21 +29,9 @@ const Select = ({
         Icon={
           Platform.OS === "ios" || Platform.OS === "android"
             ? () => (
-                <View
-                  style={{
-                    top: 10,
-                    right: 10,
-                    backgroundColor: "transparent",
-                    borderTopWidth: 10,
-                    borderTopColor: "#c2b37f",
-                    borderRightWidth: 10,
-                    borderRightColor: "transparent",
-                    borderLeftWidth: 10,
-                    borderLeftColor: "transparent",
-                    width: 0,
-                    height: 0,
-                  }}
-                />
+                <View className="right-2 top-2">
+                  <ChevronDown size={20} color={"#A4A4A4"} />
+                </View>
               )
             : undefined
         }
