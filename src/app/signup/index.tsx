@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { FacilitiesSelect } from "@/feature/facilities/facilities-select";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -27,8 +28,11 @@ export default function Signup() {
   const onSubmit = async ({
     userName,
     password,
+    facilityId,
   }: z.infer<typeof formSchema>) => {
     setLoading(true);
+
+    console.log(userName, password, facilityId);
     // const { error } = await supabase.auth.signInWithPassword({
     //   email: `${id}@medineo.cc`,
     //   password: password,
@@ -45,7 +49,7 @@ export default function Signup() {
       </Text>
       <View className="mt-[24px] p-10">
         <View>
-          <Text className="text-[14px] text-neutral-400">id</Text>
+          <Text className="text-[14px] text-neutral-400">所有者名</Text>
           <Controller
             control={form.control}
             name="userName"
@@ -74,15 +78,41 @@ export default function Signup() {
                 className="mt-1"
                 value={value}
                 onChangeText={onChange}
+                isError={!!form.formState.errors.password}
                 secureTextEntry
               />
             )}
           />
+          {form.formState.errors.password && (
+            <Text className="mt-1 text-xs text-destructive">
+              {form.formState.errors.password.message}
+            </Text>
+          )}
         </View>
-        <View className="mt-12">
-          <Button disabled={loading} onPress={form.handleSubmit(onSubmit)}>
-            {loading ? "登録中..." : "登録"}
-          </Button>
+        <View className="mt-4">
+          <Text className="text-[14px] text-neutral-400">所属施設</Text>
+          <Controller
+            control={form.control}
+            name="facilityId"
+            render={({ field: { value, onChange } }) => (
+              <FacilitiesSelect
+                onValueChange={onChange}
+                defaultValue={value}
+                isError={!!form.formState.errors.facilityId}
+                className="mt-1"
+              />
+            )}
+          />
+          {form.formState.errors.facilityId && (
+            <Text className="mt-1 text-xs text-destructive">
+              {form.formState.errors.facilityId.message}
+            </Text>
+          )}
+          <View className="mt-12">
+            <Button disabled={loading} onPress={form.handleSubmit(onSubmit)}>
+              {loading ? "登録中..." : "登録"}
+            </Button>
+          </View>
         </View>
       </View>
     </View>
