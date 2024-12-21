@@ -7,12 +7,14 @@ type Props = {
   onValueChange: (value: string) => void;
   defaultValue: string;
   isError: boolean;
+  className?: string;
 };
 
 export function FacilitiesSelect({
   onValueChange,
   defaultValue,
   isError,
+  className,
 }: Props) {
   const [facilities, setFacilities] = useState<Tables<"facilities">[]>([]);
 
@@ -39,7 +41,8 @@ export function FacilitiesSelect({
       placeholder={{ label: "施設を選択", value: "" }}
       value={defaultValue}
       onValueChange={onValueChange}
-      className={isError ? "border-destructive" : ""}
+      className={className}
+      isError={isError}
     />
   );
 }

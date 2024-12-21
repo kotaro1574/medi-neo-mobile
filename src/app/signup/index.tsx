@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Select } from "@/components/ui/select";
+import { FacilitiesSelect } from "@/feature/facilities/facilities-select";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -28,8 +28,11 @@ export default function Signup() {
   const onSubmit = async ({
     userName,
     password,
+    facilityId,
   }: z.infer<typeof formSchema>) => {
     setLoading(true);
+
+    console.log(userName, password, facilityId);
     // const { error } = await supabase.auth.signInWithPassword({
     //   email: `${id}@medineo.cc`,
     //   password: password,
@@ -46,7 +49,7 @@ export default function Signup() {
       </Text>
       <View className="mt-[24px] p-10">
         <View>
-          <Text className="text-[14px] text-neutral-400">id</Text>
+          <Text className="text-[14px] text-neutral-400">所有者名</Text>
           <Controller
             control={form.control}
             name="userName"
@@ -75,10 +78,16 @@ export default function Signup() {
                 className="mt-1"
                 value={value}
                 onChangeText={onChange}
+                isError={!!form.formState.errors.password}
                 secureTextEntry
               />
             )}
           />
+          {form.formState.errors.password && (
+            <Text className="mt-1 text-xs text-destructive">
+              {form.formState.errors.password.message}
+            </Text>
+          )}
         </View>
         <View className="mt-4">
           <Text className="text-[14px] text-neutral-400">所属施設</Text>
@@ -86,14 +95,11 @@ export default function Signup() {
             control={form.control}
             name="facilityId"
             render={({ field: { value, onChange } }) => (
-              <Select
-                className="mt-1"
-                items={[
-                  { label: "施設1", value: "facility1" },
-                  { label: "施設2", value: "facility2" },
-                ]}
-                value={value}
+              <FacilitiesSelect
                 onValueChange={onChange}
+                defaultValue={value}
+                isError={!!form.formState.errors.facilityId}
+                className="mt-1"
               />
             )}
           />

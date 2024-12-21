@@ -9,6 +9,7 @@ type Props = {
   value: string | null;
   onValueChange: (value: string) => void;
   className?: string;
+  isError?: boolean;
 };
 
 const Select = ({
@@ -17,9 +18,15 @@ const Select = ({
   value,
   onValueChange,
   className,
+  isError = false,
 }: Props) => {
   return (
-    <View className={cn("w-full h-10 bg-white", className)}>
+    <View
+      className={cn(
+        `w-full h-10 bg-white border-[0.5px] rounded-[10px] border-[#A4A4A4] overflow-hidden ${isError && "border-destructive"}`,
+        className,
+      )}
+    >
       <RNPickerSelect
         items={items}
         placeholder={placeholder}
@@ -47,28 +54,20 @@ const pickerStyle = StyleSheet.create({
     color: "black",
     paddingHorizontal: 12,
     paddingVertical: 8,
-    borderWidth: 0.5,
-    borderColor: "#A4A4A4",
-    borderRadius: 10,
   },
   inputIOSContainer: { pointerEvents: "none" },
   inputAndroid: {
+    width: "100%",
     fontSize: 14,
     color: "black",
-    borderWidth: 0.5,
     paddingHorizontal: 12,
     paddingVertical: 8,
-    borderColor: "#A4A4A4",
-    borderRadius: 10,
   },
   inputWeb: {
     fontSize: 14,
     color: "black",
-    borderWidth: 0.5,
     paddingHorizontal: 12,
     paddingVertical: 8,
-    borderColor: "#A4A4A4",
-    borderRadius: 10,
   },
 });
 
