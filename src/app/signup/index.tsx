@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { FacilitiesSelect } from "@/feature/facilities/facilities-select";
+import { supabase } from "@/lib/supabase/supabase";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -32,13 +33,59 @@ export default function Signup() {
   }: z.infer<typeof formSchema>) => {
     setLoading(true);
 
-    console.log(userName, password, facilityId);
-    // const { error } = await supabase.auth.signInWithPassword({
-    //   email: `${id}@medineo.cc`,
-    //   password: password,
-    // });
+    const { data: facility, error: facilityError } = await supabase
+      .from("facilities")
+      .select("name_en")
+      .eq("id", facilityId)
+      .single();
 
-    // if (error) Alert.alert("Sign Up Error", error.message);
+    if (facilityError) {
+      throw facilityError;
+    }
+
+    const { data: user, error: userError } = await supabase
+      .from("profiles")
+      .select("id, login_id")
+      .eq("facility_id", facilityId)
+      .order("login_id");
+
+    if (userError) {
+      throw userError;
+    }
+
+    // login_idの末尾の数字を取得 login_idの編集が無い前提のcode
+    const idNumber = !user.length
+      ? 1
+      : user[user.length - 1].login_id.match(/\d+/)
+        ? Number(user[user.length - 1].login_id.match(/\d+/)) + 1
+        : null;
+
+    if (!idNumber) {
+      throw new Error(
+        "profileのlogin_idが取得できませんでした。login_idに数字が含まれているか確認してください。",
+      );
+    }
+
+    const loginId = `${facility.name_en}${idNumber}`;
+
+    const { data, error } = await supabase.auth.signUp({
+      email: `${loginId}@medineo.cc`,
+      password,
+      options: {
+        data: {
+          loginId,
+          userName,
+          facilityId,
+        },
+      },
+    });
+
+    if (error) {
+      throw error;
+    }
+
+    console.log(data);
+
     setLoading(false);
   };
 
