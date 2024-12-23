@@ -12,13 +12,13 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          "android:shadow-black bg-[#FFCA0E] shadow-base hover:bg-[#FFCA0E]/80",
+          "ios:shadow-base bg-[#FFCA0E] hover:bg-[#FFCA0E]/80 web:shadow-base",
         destructive:
-          "android:shadow-black bg-destructive text-destructive-foreground shadow-base hover:bg-destructive/90",
+          "ios:shadow-base bg-destructive text-destructive-foreground hover:bg-destructive/90 web:shadow-base",
         outline:
           "border-[0.5px] border-[#A4A4A4] text-[11px] text-[#A4A4A4] hover:bg-accent hover:text-accent-foreground",
         secondary:
-          "android:shadow-black bg-white text-[#A4A4A4] shadow-base hover:bg-white/40",
+          "ios:shadow-base bg-white text-[#A4A4A4] hover:bg-white/40 web:shadow-base",
         ghost: "text-sm text-[#A4A4A4] shadow-none hover:bg-accent",
         link: "text-primary underline-offset-4 hover:underline",
       },
