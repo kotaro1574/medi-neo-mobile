@@ -1,50 +1,45 @@
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { supabase } from "@/lib/supabase/supabase";
-import { User } from "@supabase/supabase-js";
-import { useEffect, useState } from "react";
-import { Alert, SafeAreaView, Text, View } from "react-native";
+import { CameraType, CameraView, useCameraPermissions } from "expo-camera";
+import { useState } from "react";
+import { Text, View } from "react-native";
 
 export default function Top() {
-  const [user, setUser] = useState<User | null>(null);
-  useEffect(() => {
-    supabase.auth.getUser().then(({ data: { user } }) => {
-      if (user) {
-        setUser(user);
-      } else {
-        Alert.alert("Error Accessing User");
-      }
-    });
-  }, []);
+  const [facing, setFacing] = useState<CameraType>("back");
+  const [permission, requestPermission] = useCameraPermissions();
 
-  const doLogout = async () => {
-    const { error } = await supabase.auth.signOut();
-    if (error) {
-      Alert.alert("Error Signing Out User", error.message);
-    }
-  };
+  if (!permission) {
+    return <View />;
+  }
+
+  if (!permission.granted) {
+    return (
+      <View className="flex-1 justify-center">
+        <Text className="pb-2.5 text-center">
+          カメラに映すには許可が必要です
+        </Text>
+        <Button onPress={requestPermission}>許可する</Button>
+      </View>
+    );
+  }
+
+  function toggleCameraFacing() {
+    setFacing((current) => (current === "back" ? "front" : "back"));
+  }
 
   return (
-    <SafeAreaView>
-      <View className="min-h-screen bg-[#F5F5F5] px-4 pb-8 pt-[62px]">
-        <Text className="text-[20px] text-[#C2B37F]">アカウント情報</Text>
-        <View className="mt-4 space-y-4 rounded-2xl bg-white p-4">
-          <View>
-            <Text className="text-[14px] text-neutral-400">ユーザー名</Text>
-            <Input className="mt-1" value={user?.email} />
-          </View>
-          <View className="mt-4">
-            <Text className="text-[14px] text-neutral-400">所属施設</Text>
-            <Text className="mt-1">施設名</Text>
-          </View>
-        </View>
-        <Button className="mt-4" onPress={() => {}}>
-          更新
-        </Button>
-        <Button className="mt-4" onPress={doLogout} variant="destructive">
-          ログアウト
-        </Button>
+    <View className="h-screen bg-white p-4">
+      <CameraView
+        style={{
+          width: "100%",
+          height: "70%",
+          backgroundColor: "black",
+          borderRadius: 24,
+        }}
+        facing={facing}
+      />
+      <View className="mt-4">
+        <Button onPress={toggleCameraFacing}>Flip Camera</Button>
       </View>
-    </SafeAreaView>
+    </View>
   );
 }
