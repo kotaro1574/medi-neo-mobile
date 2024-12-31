@@ -9,7 +9,13 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSAppTransportSecurity": {
+          "NSAllowsArbitraryLoads": true, // APIの呼び出しでhttpを許可
+          "NSAllowsArbitraryLoadsInWebContent": true //WebViewでhttpを許可
+        }
+      }
     },
     "android": {
       "adaptiveIcon": {
