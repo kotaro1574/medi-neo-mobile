@@ -8,5 +8,5 @@ export default function IndexPage() {
     return null;
   }
 
-  return <Redirect href={!session ? "/(app)" : "/login"} />;
+  return <Redirect href={session ? "/(app)" : "/login"} />;
 }
