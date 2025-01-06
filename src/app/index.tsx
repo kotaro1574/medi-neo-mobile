@@ -1,24 +1,12 @@
-import { supabase } from "@/lib/supabase/supabase";
-import { router } from "expo-router";
-import { useEffect } from "react";
+import { useAuth } from "@/components/provider/auth-provider";
+import { Redirect } from "expo-router";
 
 export default function IndexPage() {
-  useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session) {
-        router.replace("/top");
-      } else {
-        console.log("no user");
-      }
-    });
+  const { session, isLoading } = useAuth();
 
-    supabase.auth.onAuthStateChange((_event, session) => {
-      if (session) {
-        router.replace("/top");
-      } else {
-        console.log("no user");
-        router.replace("/login");
-      }
-    });
-  }, []);
+  if (isLoading) {
+    return null;
+  }
+
+  return <Redirect href={!session ? "/(app)" : "/login"} />;
 }
