@@ -1,15 +1,11 @@
-import { Slot } from "expo-router";
-
-// Import your global CSS file
-import { Header } from "@/components/layout/header";
-import { SafeAreaView } from "react-native";
+import { AuthProvider } from "@/components/provider/auth-provider";
+import { Stack } from "expo-router";
 import "../../global.css";
 
 export default function RootLayout() {
   return (
-    <SafeAreaView>
-      <Header profileName="Profile" />
-      <Slot />
-    </SafeAreaView>
+    <AuthProvider>
+      <Stack screenOptions={{ headerShown: false }} />
+    </AuthProvider>
   );
 }

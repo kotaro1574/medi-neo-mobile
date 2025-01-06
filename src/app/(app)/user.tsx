@@ -5,7 +5,7 @@ import { User } from "@supabase/supabase-js";
 import { useEffect, useState } from "react";
 import { Alert, SafeAreaView, Text, View } from "react-native";
 
-export default function Top() {
+export default function UserPage() {
   const [user, setUser] = useState<User | null>(null);
   useEffect(() => {
     supabase.auth.getUser().then(({ data: { user } }) => {

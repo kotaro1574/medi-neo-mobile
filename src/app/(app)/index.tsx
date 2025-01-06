@@ -84,7 +84,7 @@ export default function Top() {
   };
 
   return (
-    <SafeAreaView>
+    <SafeAreaView className="flex-1">
       <View className="h-screen bg-white p-4">
         <View className="h-[70%] overflow-hidden rounded-3xl">
           <CameraView
