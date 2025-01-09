@@ -1,8 +1,16 @@
 import { Button } from "@/components/ui/button";
+import { Icons } from "@/components/ui/icon";
 import { CameraType, CameraView, useCameraPermissions } from "expo-camera";
 import { fetch } from "expo/fetch";
 import { useState } from "react";
-import { Alert, Platform, SafeAreaView, Text, View } from "react-native";
+import {
+  Alert,
+  Platform,
+  SafeAreaView,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 export default function Top() {
   const [facing, setFacing] = useState<CameraType>("back");
@@ -97,13 +105,20 @@ export default function Top() {
             ref={setCamera}
           />
         </View>
-        <View className="mt-4">
-          <Button onPress={toggleCameraFacing}>カメラを切り替え</Button>
-        </View>
-        <View className="mt-4">
-          <Button onPress={takePicture} disabled={isLoading}>
-            {isLoading ? "処理中..." : "写真を撮影"}
-          </Button>
+        <View className="relative mt-4 w-full flex-row items-center justify-center">
+          <View className="absolute left-2 top-0">
+            <Text>認証やり直し</Text>
+          </View>
+          <View>
+            <TouchableOpacity onPress={takePicture}>
+              <Icons.shutter color={"#dc2626"} />
+            </TouchableOpacity>
+          </View>
+          <View className="absolute right-2 top-0">
+            <TouchableOpacity onPress={toggleCameraFacing}>
+              <Icons.switch color={"#000000"} />
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
     </SafeAreaView>
