@@ -94,7 +94,7 @@ export default function Top() {
   return (
     <SafeAreaView className="flex-1">
       <View className="h-screen bg-white p-4">
-        <View className="h-[70%] overflow-hidden rounded-3xl">
+        <View className="relative h-[70%] overflow-hidden rounded-3xl">
           <CameraView
             style={{
               width: "100%",
@@ -104,6 +104,30 @@ export default function Top() {
             facing={facing}
             ref={setCamera}
           />
+          <View className="absolute inset-x-2 bottom-2">
+            <View
+              style={{
+                backgroundColor: "rgba(163, 163, 163, 0.4)",
+              }}
+              className="flex-row items-center gap-4 rounded-2xl px-2 py-2.5 backdrop-blur-sm"
+            >
+              <View className="size-10 flex-row items-center justify-center rounded-full bg-white">
+                <Icons.user color={"black"} />
+              </View>
+              <Text className="text-xl">lastName firstName</Text>
+            </View>
+            <View
+              style={{
+                backgroundColor: "rgba(163, 163, 163, 0.4)",
+              }}
+              className="mt-2 flex-row items-center gap-4 rounded-2xl bg-[#A4A4A4]/40 px-2 py-2.5"
+            >
+              <View className="size-10 flex-row items-center justify-center rounded-full bg-white">
+                <Icons.drug color={"black"} />
+              </View>
+              <Text className="text-xl">lastName firstName</Text>
+            </View>
+          </View>
         </View>
         <View className="relative mt-4 w-full flex-row items-center justify-center">
           <View className="absolute left-2 top-0">
