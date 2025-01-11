@@ -35,7 +35,7 @@ export default function Login() {
   };
 
   return (
-    <View className="container max-w-[450px] bg-white py-[120px]">
+    <View className="container h-screen max-w-[450px] bg-white py-[120px]">
       <Text className="text-center text-[24px] font-bold text-[#c2b37f]">
         ログイン
       </Text>
